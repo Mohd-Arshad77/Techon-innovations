@@ -1,28 +1,29 @@
 import React from "react";
 import box from "../assets/images/box.png";
-
 import StatCard from "../components/cards/StatCard";
 import GlassCard from "../components/ui/GlassCard";
 
-
 const BarGraph = () => {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const data = [100, 70, 130, 90, 75, 170, 90, 120, 75, 100, 75, 85];
+  const data = [50, 80, 110, 75, 65, 115, 60, 95, 40, 85, 55, 75];
 
   return (
-    <div className="flex flex-col h-full w-full justify-end px-1 pb-1">
-      <div className="flex items-baseline justify-between h-[180px] relative border-b border-gray-100">
-        <div className="absolute top-[30%] left-0 w-full border-t border-dashed border-blue-300 opacity-20"></div>
+    <div className="flex flex-col h-full w-full justify-end px-1 pb-2 pt-14 relative">
+      <div className="absolute top-[-2%] left-0 w-full flex items-center gap-2 z-0 px-1">
+         <div className="flex-1 border-t border-dashed border-blue-400/20"></div>
+         <span className="text-[10px] text-blue-400/30 font-bold">30</span>
+      </div>
+
+      <div className="flex items-baseline justify-between h-[120px] relative border-b border-gray-100/50 z-10">
         {data.map((height, i) => (
-          <div key={i} className="flex flex-col items-center gap-1.5">
-            {/* UPDATED: rounded-full for curved bottom matching Figma Rectangle 38 */}
+          <div key={i} className="flex flex-col items-center gap-3">
             <div
-              className={`w-[20px] rounded-full transition-all duration-300 ${
-                months[i] === "Jun" ? "bg-[#C8E764]" : "bg-[#E9EDF7]"
+              className={`w-[16px] lg:w-[20px] rounded-[6px] transition-all duration-500 ease-in-out ${
+                months[i] === "Jun" ? "bg-[#C8E764] shadow-sm" : "bg-[#E9EDF7]"
               }`}
               style={{ height: `${height}px` }}
             ></div>
-            <span className="text-[8px] text-gray-400 font-poppins font-medium uppercase">
+            <span className="text-[9px] text-gray-400 font-poppins font-medium">
               {months[i]}
             </span>
           </div>
@@ -33,62 +34,61 @@ const BarGraph = () => {
 };
 
 export default function Dashboard() {
+  // ഫിഗ്മ പ്രകാരം ഹെഡറുകൾ
+  const tableHeaders = ["Entity", "Email", "Document Name", "Document Type", "Document Type", "Document Type", "Document Type"];
 
   return (
-    <div className="flex flex-col gap-6 w-full h-full p-70 overflow-hidden font-poppins">
+    <div className="flex flex-col gap-6 w-full h-full p-4 overflow-hidden font-poppins">
+      
+      {/* TOP ROW */}
+      <div className="flex gap-6 flex-[1.2] min-h-0">
+        <div className="w-[32%] h-full">
+          <StatCard title="Documents Expiring">
+            <BarGraph />
+          </StatCard>
+        </div>
 
-      {/* ================= TOP ROW (KEEP SAME) ================= */}
-     <div className="flex gap-6 h-[320px]">
-
-  {/* LEFT SMALL CARD */}
-  <div className="w-[32%] h-full">
-    <StatCard title="Documents Expiring">
-      <BarGraph />
-    </StatCard>
+ {/* RIGHT BIG CARD */}
+<div className="flex-1 h-full">
+<StatCard title="This Month Expires Documents">
+  <div className="w-full h-full flex flex-col px-1 font-poppins">
+    
+    {/* കസ്റ്റം ഹെഡർ: ഫിഗ്മ ഡിസൈനിലെ പോലെ ഒരേ വരിയിൽ വരാൻ ഓരോന്നിനും വിഡ്ത്ത് നൽകി */}
+    <div className="flex items-center border-b border-gray-400 pb-2 mb-4">
+      <span className="w-[8%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Entity</span>
+      <span className="w-[8%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Email</span>
+      <span className="w-[16%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Document Name</span>
+      <span className="w-[15%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Document Type</span>
+      <span className="w-[15%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Document Type</span>
+      <span className="w-[14%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Document Type</span>
+      <span className="w-[19%] text-[11px] font-normal text-[#0a1445] whitespace-nowrap">Document Type</span>
+    </div>
+    
+    {/* Empty State */}
+    <div className="flex-1 flex flex-col items-center justify-center opacity-30">
+      <img src={box} className="w-16 h-16 object-contain mb-2" alt="empty" />
+      <p className="text-[10px] text-gray-400 font-medium">No documents expiring</p>
+    </div>
   </div>
-
-  {/* RIGHT BIG CARD */}
-  <div className="flex-1 h-full">
-    <StatCard
-      title="This Month Expires Documents"
-      isTable
-      headers={[
-        "Entity",
-        "Email",
-        "Document Name",
-        "Document Type",
-        "Document Type",
-        "Document Type",
-        "Document Type",
-      ]}
-      boxImage={box}
-    />
-  </div>
-
+</StatCard>
 </div>
+      </div>
 
-
-
-      {/* ================= BOTTOM ROW (FIXED) ================= */}
+      {/* BOTTOM ROW */}
       <div className="flex gap-6 flex-1 min-h-0">
-
-        {/* Documents Expiry (LEFT) */}
         <div className="w-[32%] h-full">
           <StatCard
             title="Documents Expiry"
             isTable
-            headers={["Document Type", "Document Name", "Status", "Detail"]}
+            headers={["Type", "Name", "Status", "Detail"]}
             boxImage={box}
           />
         </div>
-
-
-        {/* Blue Cards (RIGHT) */}
         <div className="flex-1 h-full">
           <GlassCard />
         </div>
-
       </div>
+
     </div>
   );
 }
